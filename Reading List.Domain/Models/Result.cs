@@ -19,15 +19,9 @@ namespace Reading_List.Domain.Models
                 Value = value
             };
         }
-        public static Result<T> Failure(string errorMessage, T? value = default)
-        {
-            return new Result<T>
-            {
-                IsSuccess = false,
-                ErrorMessage = errorMessage,
-                Value = value is not null ? value : default
-            };
-        }
-    }
+        public static Result<T> Failure(string errorMessage, T? value = default) =>
+           new() { IsSuccess = false, ErrorMessage = errorMessage, Value = value };
+    
+}
 }
 
