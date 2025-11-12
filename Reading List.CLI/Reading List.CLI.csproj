@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Reading List.Application\Reading List.Application.csproj" />
     <ProjectReference Include="..\Reading List.Infrastructure\Reading List.Infrastructure.csproj" />
   </ItemGroup>

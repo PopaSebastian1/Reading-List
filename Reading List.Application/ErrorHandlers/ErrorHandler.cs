@@ -16,8 +16,13 @@ namespace Reading_List.Application.ErrorHandlers
         public static Result<TOut> EntityUpdateFailed<TOut>(TOut entity) =>
             Result<TOut>.Failure("Failed to update entity", entity);
 
+        public static Result<TOut> FileNotFound<TOut>(string fileName) =>
+            Result<TOut>.Failure($"File '{fileName}' was not found");
+
+
         public static Result<TOut> GenericError<TOut>(string message) =>
             Result<TOut>.Failure(message);
+
 
     }
 }
