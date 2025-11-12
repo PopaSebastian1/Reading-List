@@ -1,4 +1,5 @@
 ﻿using Reading_List.Domain.Models;
+using Reading_List.Domain.Models.Interfaces;
 namespace Reading_List.Application.Abstractions
 {
     public interface IRepository<T> where T : class
@@ -9,8 +10,6 @@ namespace Reading_List.Application.Abstractions
         Task<Result<T>> UpdateAsync(T entity);
 
         Task<Result<bool>> DeleteAsync(T entity);
-
-        Task<Result<T?>> GetByIdAsync(Guid id);
 
         Task<IEnumerable<Result<T>>> GetAllAsync();
 

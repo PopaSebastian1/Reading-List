@@ -1,4 +1,5 @@
 ﻿using Reading_List.Domain.Enums;
+using Reading_List.Domain.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Reading_List.Domain.Models
 {
-    public class Book
+    public class Book : IEntity<int>
     {
         public int Id { get; set; }
         public string Title { get; set; }

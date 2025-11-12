@@ -26,6 +26,8 @@ namespace Reading_List.Domain.Models
                 IsSuccess = false,
                 ErrorMessage = errorMessage,
                 Value = value
-            }
+            };
         }
+    }
 }
+
