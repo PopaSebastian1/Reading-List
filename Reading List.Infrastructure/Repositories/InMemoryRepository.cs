@@ -3,21 +3,30 @@ using Reading_List.Domain.Models;
 using Reading_List.Domain.Models.Interfaces;
 using System.Collections.Concurrent;
 using Reading_List.Application.ErrorHandlers;
+
 namespace Reading_List.Infrastructure.Repositories
 {
     public class InMemoryRepository<TKey, T> :
-        IRepository<TKey, T>
+        IRepository<T>
         where TKey : notnull
-        where T : class, IEntity<TKey>
+        where T : class
     {
         private readonly ConcurrentDictionary<TKey, T> _store = new();
+        private readonly Func<T, TKey> _keySelector;
+
+        public InMemoryRepository(Func<T, TKey> keySelector)
+        {
+            _keySelector = keySelector ?? throw new ArgumentNullException(nameof(keySelector));
+        }
 
         public Task<Result<T>> AddAsync(T entity)
         {
             if (entity is null)
                 return Task.FromResult(ErrorHandler.EntityNull<T>());
 
-            if (!_store.TryAdd(entity.Id, entity))
+            var key = _keySelector(entity);
+
+            if (!_store.TryAdd(key, entity))
                 return Task.FromResult(ErrorHandler.EntityAlreadyExists<T>(entity));
 
             return Task.FromResult(Result<T>.Success(entity));
@@ -28,10 +37,12 @@ namespace Reading_List.Infrastructure.Repositories
             if (entity is null)
                 return Task.FromResult(ErrorHandler.EntityNull<T>());
 
-            if (!_store.TryGetValue(entity.Id, out var current))
-                return Task.FromResult(ErrorHandler.EntityNotFound<T, TKey>(entity.Id));
+            var key = _keySelector(entity);
 
-            if (!_store.TryUpdate(entity.Id, entity, current))
+            if (!_store.TryGetValue(key, out var current))
+                return Task.FromResult(ErrorHandler.EntityNotFound<T, TKey>(key));
+
+            if (!_store.TryUpdate(key, entity, current))
                 return Task.FromResult(ErrorHandler.EntityUpdateFailed<T>(entity));
 
             return Task.FromResult(Result<T>.Success(entity));
@@ -42,19 +53,13 @@ namespace Reading_List.Infrastructure.Repositories
             if (entity is null)
                 return Task.FromResult(ErrorHandler.EntityNull<bool>());
 
-            var removed = _store.TryRemove(entity.Id, out _);
+            var key = _keySelector(entity);
+
+            var removed = _store.TryRemove(key, out _);
             return Task.FromResult(
                 removed
                     ? Result<bool>.Success(true)
-                    : ErrorHandler.EntityNotFound<bool, TKey>(entity.Id));
-        }
-
-        public Task<Result<T?>> GetByIdAsync(TKey id)
-        {
-            return Task.FromResult(
-                _store.TryGetValue(id, out var entity)
-                    ? Result<T?>.Success(entity)
-                    : ErrorHandler.EntityNotFound<T?, TKey>(id));
+                    : ErrorHandler.EntityNotFound<bool, TKey>(key));
         }
 
         public Task<IEnumerable<Result<T>>> GetAllAsync()

@@ -7,48 +7,72 @@ namespace Reading_List.Application.Services
 {
     public sealed class BookService : IBookService
     {
-        private readonly IRepository<int, Book> _bookRepository;
+        private readonly IRepository<Book> _bookRepository;
         private readonly IValidator<Book> _bookValidator;
 
-        public BookService(IRepository<int, Book> bookRepository, IValidator<Book> bookValidator)
+        public BookService(IRepository<Book> bookRepository, IValidator<Book> bookValidator)
         {
             _bookRepository = bookRepository;
             _bookValidator = bookValidator;
         }
 
-        public Task<Result<Book>> AddAsync(Book entity, CancellationToken ct = default)
+        public async Task<Result<Book>> AddAsync(Book entity, CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            if (entity is null)
+                return ErrorHandler.EntityNull<Book>();
+
+            var validation = await _bookValidator.ValidateAsync(entity, ct);
+            if (!validation.IsValid)
+            {
+                var message = string.Join("; ", validation.Errors.Select(e => e.ErrorMessage));
+                return ErrorHandler.GenericError<Book>(message);
+            }
+
+            return await _bookRepository.AddAsync(entity);
         }
 
-        public Task<Result<bool>> DeleteAsync(Book entity, CancellationToken ct = default)
+        public async Task<Result<Book>> UpdateAsync(Book entity, CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            if (entity is null)
+                return ErrorHandler.EntityNull<Book>();
+
+            var validation = await _bookValidator.ValidateAsync(entity, ct);
+            if (!validation.IsValid)
+            {
+                var message = string.Join("; ", validation.Errors.Select(e => e.ErrorMessage));
+                return ErrorHandler.GenericError<Book>(message);
+            }
+
+            return await _bookRepository.UpdateAsync(entity);
         }
 
-        public Task<IEnumerable<Result<Book>>> GetAllAsync(CancellationToken ct = default)
+        public async Task<Result<bool>> DeleteAsync(Book entity, CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            if (entity is null)
+                return ErrorHandler.EntityNull<bool>();
+
+            return await _bookRepository.DeleteAsync(entity);
         }
 
-        public Task<Result<Book?>> GetByIdAsync(int id, CancellationToken ct = default)
+        public async Task<IEnumerable<Result<Book>>> GetAllAsync(CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            return await _bookRepository.GetAllAsync();
         }
 
-        public Task<IEnumerable<Result<Book>>> GetFinishedBooks()
+        public async Task<IEnumerable<Result<Book>>> GetFinishedBooks()
         {
-            throw new NotImplementedException();
+            var allBooks = await _bookRepository.GetAllAsync();
+            return allBooks.Where(r => r.IsSuccess && r.Value?.Finished == true);
         }
 
-        public Task<IEnumerable<Result<Book>>> GetTopRatedBooks(int count)
+        public async Task<IEnumerable<Result<Book>>> GetTopRatedBooks(int count)
         {
-            throw new NotImplementedException();
-        }
+            var allBooks = await _bookRepository.GetAllAsync();
 
-        public Task<Result<Book>> UpdateAsync(Book entity, CancellationToken ct = default)
-        {
-            throw new NotImplementedException();
+            return allBooks
+                .Where(r => r.IsSuccess && r.Value is not null)
+                .OrderByDescending(r => r.Value!.Rating)
+                .Take(count);
         }
     }
 }

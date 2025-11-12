@@ -11,6 +11,5 @@ namespace Reading_List.Application.Abstractions
         Task<Result<T>> UpdateAsync(T entity, CancellationToken ct = default);
         Task<Result<bool>> DeleteAsync(T entity, CancellationToken ct = default);
         Task<IEnumerable<Result<T>>> GetAllAsync(CancellationToken ct = default);
-        Task<Result<T?>> GetByIdAsync(TKey id, CancellationToken ct = default);
     }
 }
