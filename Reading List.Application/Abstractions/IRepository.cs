@@ -10,5 +10,7 @@ namespace Reading_List.Application.Abstractions
         Task<Result<T>> UpdateAsync(T entity);
         Task<Result<bool>> DeleteAsync(T entity);
         Task<IEnumerable<Result<T>>> GetAllAsync();
+
+        Task<Result<T>> GetByIdAsync(int id);
     }
 }
