@@ -4,7 +4,7 @@ namespace Reading_List.Application.Commands
 {
     public class ClearConsoleCommand : ICommand
     {
-        public string Key => "9";
+        public string Key => "C";
         public string Description => "Clear Console";
         public Task ExecuteAsync(CancellationToken ct = default)
         {

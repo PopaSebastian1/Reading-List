@@ -7,7 +7,7 @@ namespace Reading_List.Application.Commands
     public sealed class ImportCSVsCommand : ICommand
     {
         public string Key => "1";
-        public string Description => "Import one or more CSV files (comma-separated). Enter for defaults.";
+        public string Description => "Import one or more CSV files (comma-separated).";
 
         private readonly IBookImportService _importExportService;
 

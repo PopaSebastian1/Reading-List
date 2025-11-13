@@ -25,7 +25,8 @@ namespace Reading_List.Application.Commands
             var solutionRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, @"..\..\..\.."));
             var dataDir = Path.Combine(solutionRoot, "Reading List.Infrastructure", "Data");
             Console.Write("Enter export file path (e.g., books.json or books.csv): ");
-            var path= dataDir+ Console.ReadLine();
+            var fileName = Console.ReadLine();
+            var path = Path.Combine(dataDir, fileName ?? string.Empty);
 
             if (string.IsNullOrWhiteSpace(path))
             {
