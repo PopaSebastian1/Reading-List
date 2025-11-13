@@ -1,11 +1,21 @@
 Id,Title,Author,Year,Pages,Genre,Finished,Rating
-1,Book Title 1,Author 1,2001,110,NonFiction,false,2
-2,Book Title 2,Author 2,2002,120,Mystery,true,3
-3,Book Title 3,Author 3,2003,130,ScienceFiction,false,4
-4,Book Title 4,Author 4,2004,140,Fantasy,true,5
-1,Book Title 5,Author 5,2005,150,Biography,false,6
-6,Book Title 6,Author 6,2006,160,History,true,7
-7,Book Title 7,Author 7,2007,170,Romance,false,8
-8,Book Title 8,Author 8,2008,180,Thriller,true,9
-9,Book Title 9,Author 9,2009,190,SelfHelp,false,10
-10,Book Title 10,Author 10,2010,200,Other,true,1
+1,"Whispers in the Dust","Amira Patel",2019,384,"Fiction",true,4.1
+2,"The Binary Heart","Lucas Fernandes",2023,310,"Software",false,3.7
+3,"Echoes of Tomorrow","Nadia Volkov",2016,428,"Software",true,4.4
+4,"The Forgotten Heir","Eleanor Bryce",2008,512,"Fantasy",false,3.9
+5,"Code and ConSoftwareience","Marcus Ito",2020,298,"Software",true,4.2
+6,"Beneath the Willow Moon","Sophia Anders",2013,402,"Romance",false,3.8
+7,"Mind Over Matter","Jacob Ellis",2017,289,"SelfHelp",true,4.5
+8,"The Final Equation","Ahmed Rahman",2022,376,"Thriller",true,4.0
+9,"Tides of Glass","Lina Sørensen",2010,448,"Fantasy",false,3.6
+10,"The Innovator’s Dilemma Revisited","Chen Wei",2018,354,"NonFiction",true,4.3
+11,"A World Between Stars","Elena Kuznetsova",2024,512,"Software",true,4.6
+12,"The Price of Silence","Owen Fitzgerald",2005,398,"Mystery",false,3.5
+13,"Hearts Under Fire","Natalie Cruz",2015,275,"Romance",true,4.1
+14,"The Coded Mind","Yasmin Ortega",2021,332,"Software",false,3.9
+15,"Beyond the Riverbend","Samuel Boateng",2011,480,"History",true,4.4
+16,"Into the Abyss","Richard Monroe",2007,366,"Thriller",false,3.7
+17,"The Wandering Star","Chiara Bellini",2020,614,"Fantasy",true,4.9
+18,"Hidden Truths","Emily Johansson",2009,451,"Mystery",false,3.4
+19,"The Empath’s Guide to Clarity","Ruth Kim",2022,272,"SelfHelp",true,4.8
+20,"Portraits of the Unknown","Andre Dubois",2014,390,"Biography",false,3.6
