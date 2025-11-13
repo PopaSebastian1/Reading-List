@@ -1,0 +1,11 @@
+Id,Title,Author,Year,Pages,Genre,Finished,Rating
+11,Book Title 11,Author 11,2011,210,Fiction,false,2
+12,Book Title 12,Author 12,2012,220,NonFiction,true,3
+13,Book Title 13,Author 13,2013,230,Mystery,false,4
+14,Book Title 14,Author 14,2014,240,ScienceFiction,true,5
+1,Book Title 15,Author 15,2015,250,Fantasy,false,6
+16,Book Title 16,Author 16,2016,260,Biography,true,7
+17,Book Title 17,Author 17,2017,270,History,false,8
+18,Book Title 18,Author 18,2018,280,Romance,true,9
+19,Book Title 19,Author 19,2019,290,Thriller,false,10
+20,Book Title 20,Author 20,2000,300,SelfHelp,true,1

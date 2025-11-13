@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Reading_List.Domain.Models.Interfaces
+﻿namespace Reading_List.Domain.Models.Interfaces
 {
-    public interface IEntity<Tkey>
+    public interface IEntity<TKey>
     {
-        public Tkey Id { get; set; }
+        TKey Id { get; set; }
     }
 }

@@ -1,0 +1,11 @@
+Id,Title,Author,Year,Pages,Genre,Finished,Rating
+1,Book Title 1,Author 1,2001,110,NonFiction,false,2
+2,Book Title 2,Author 2,2002,120,Mystery,true,3
+3,Book Title 3,Author 3,2003,130,ScienceFiction,false,4
+4,Book Title 4,Author 4,2004,140,Fantasy,true,5
+1,Book Title 5,Author 5,2005,150,Biography,false,6
+6,Book Title 6,Author 6,2006,160,History,true,7
+7,Book Title 7,Author 7,2007,170,Romance,false,8
+8,Book Title 8,Author 8,2008,180,Thriller,true,9
+9,Book Title 9,Author 9,2009,190,SelfHelp,false,10
+10,Book Title 10,Author 10,2010,200,Other,true,1
