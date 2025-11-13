@@ -43,17 +43,54 @@ namespace Reading_List.Infrastructure.FileService
                 using var reader = new StreamReader(file);
                 using var csv = new CsvReader(reader, config);
 
-                var books = csv.GetRecords<Book>().ToList();
-
-                foreach (var book in books)
+                try
                 {
-                   
-                    if(!allBooks.TryAdd(book.Id, book))
+                    csv.Read();
+                    csv.ReadHeader();
+
+                    while (csv.Read())
                     {
-                        await logger.LogWarningAsync($"Duplicate book with ID {book.Id} found in file {file}. Skipping duplicate.", ct);
+                        try
+                        {
+                            var book = csv.GetRecord<Book>();
+
+                            if (book == null)
+                            {
+                                var raw = csv.Parser.RawRecord ?? "<unknown>";
+
+                                await logger.LogErrorAsync(
+                                    $"Invalid row (null record) in file {file}. Skipped.\nRaw CSV: {raw}",
+                                    null,
+                                    ct
+                                );
+
+                                continue;
+                            }
+
+                            if (!allBooks.TryAdd(book.Id, book))
+                            {
+                                await logger.LogWarningAsync(
+                                    $"Duplicate book with ID {book.Id} in file {file}. Skipped.",
+                                    ct
+                                );
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            var raw = csv.Parser.RawRecord ?? "<unknown>";
+
+                            await logger.LogErrorAsync(
+                                $"Invalid row in file {file}. Skipped.\nRaw CSV: {raw}",
+                                ex,
+                                ct
+                            );
+                        }
                     }
                 }
-            }, ct));
+                catch (Exception ex) {
+                    var msg = $"Failed to read CSV file {file}.";
+                    await logger.LogErrorAsync(msg, ex, ct);}
+                }, ct));
 
             await Task.WhenAll(tasks);
 

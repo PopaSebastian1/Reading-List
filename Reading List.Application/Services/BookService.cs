@@ -131,6 +131,27 @@ namespace Reading_List.Application.Services
 
             return await UpdateAsync(book, ct);
         }
+        public async Task<Result<BooksStats>> GetStatsAsync(CancellationToken ct = default)
+        {
+            var results = await _bookRepository.GetAllAsync();
 
+            var books = results
+                .Where(r => r.IsSuccess && r.Value is not null)
+                .Select(r => r.Value!)
+                .ToList();
+
+            var total = books.Count;
+            var finished = books.Count(b => b.Finished);
+
+            var ratings = books.Where(b => b.Rating.HasValue).Select(b => b.Rating!.Value).ToList();
+            decimal? avgRating = ratings.Count > 0 ? Math.Round(ratings.Average(), 2) : null;
+
+            var pagesByGenre = books
+                .GroupBy(b => b.Genre)
+                .ToDictionary(g => g.Key, g => g.Sum(b => b.Pages));
+
+            var stats = new BooksStats(total, finished, avgRating, pagesByGenre);
+            return Result<BooksStats>.Success(stats);
+        }
     }
 }

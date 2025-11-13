@@ -13,6 +13,8 @@ namespace Reading_List.Application.Abstractions
         Task<Result<Book>> MarkAsFinished(int bookId, CancellationToken ct = default);
 
         Task<Result<Book>> SetRating(int bookId, decimal rating, CancellationToken ct = default);
+        Task<Result<BooksStats>> GetStatsAsync(CancellationToken ct = default);
+
 
     }
 }

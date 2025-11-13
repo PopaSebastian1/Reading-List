@@ -1,6 +1,6 @@
 Id,Title,Author,Year,Pages,Genre,Finished,Rating
 1,"Whispers in the Dust","Amira Patel",2019,384,"Fiction",true,4.1
-2,"The Binary Heart","Lucas Fernandes",2023,310,"Software",false,3.7
+2,"The Binary Heart",2023,"Lucas Fernandes",2023,310,"Software",false,3.7
 3,"Echoes of Tomorrow","Nadia Volkov",2016,428,"Software",true,4.4
 4,"The Forgotten Heir","Eleanor Bryce",2008,512,"Fantasy",false,3.9
 5,"Code and ConSoftwareience","Marcus Ito",2020,298,"Software",true,4.2

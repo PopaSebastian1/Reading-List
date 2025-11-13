@@ -16,7 +16,7 @@ class Program
     {
         var services = new ServiceCollection();
 
-        // Repository + services
+
         services.AddSingleton<IRepository<Book>>(new InMemoryRepository<int, Book>(b => b.Id));
         services.AddSingleton<IBookImportService, BookImportService>();
         services.AddSingleton<IBookExportStrategy, JsonBookExportStrategy>();
@@ -28,7 +28,6 @@ class Program
         services.AddSingleton<IValidator<Book>, BookValidator>();
 
 
-        // Commands
         services.AddSingleton<ICommand, ImportCSVsCommand>();
         services.AddSingleton<ICommand, ListAllCommand>();
         services.AddSingleton<ICommand, GetTopRatedCommand>();
@@ -38,7 +37,9 @@ class Program
         services.AddSingleton<ICommand, SetRatingCommand>();
         services.AddSingleton<ICommand, ClearConsoleCommand>();
         services.AddSingleton<ICommand, ExportBooksCommand>();
-        // Menu
+        services.AddSingleton<ICommand, GetStatsCommand>();
+
+
         services.AddSingleton<Menu>();
 
         var provider = services.BuildServiceProvider();
