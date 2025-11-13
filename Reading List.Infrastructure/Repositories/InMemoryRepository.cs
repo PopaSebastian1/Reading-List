@@ -2,7 +2,7 @@
 using Reading_List.Domain.Models;
 using Reading_List.Domain.Models.Interfaces;
 using System.Collections.Concurrent;
-using Reading_List.Application.ErrorHandlers;
+using Reading_List.Application.Handlers;
 
 namespace Reading_List.Infrastructure.Repositories
 {
@@ -66,6 +66,19 @@ namespace Reading_List.Infrastructure.Repositories
         {
             var results = _store.Values.Select(Result<T>.Success);
             return Task.FromResult(results);
+        }
+
+        public Task<Result<T>> GetByIdAsync(int id)
+        {
+            var key = (TKey)(object)id;
+            if (_store.TryGetValue(key, out var entity))
+            {
+                return Task.FromResult(Result<T>.Success(entity));
+            }
+            else
+            {
+                return Task.FromResult(ErrorHandler.EntityNotFound<T, TKey>(key));
+            }
         }
     }
 }

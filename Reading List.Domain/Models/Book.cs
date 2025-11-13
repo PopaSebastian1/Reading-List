@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Reading_List.Domain.Models
 {
-    public class Book : IEntity<int>
+    public class Book : IEntity
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -17,10 +17,10 @@ namespace Reading_List.Domain.Models
         public int Pages { get; set; }
         public Genre Genre { get; set; }
         public bool Finished { get; set; }
-        public int? Rating { get; set; }
+        public decimal? Rating { get; set; }
 
 
-        public Book(int id, string title, string author, int year, int pages, Genre genre, bool finished, int? rating)
+        public Book(int id, string title, string author, int year, int pages, Genre genre, bool finished, decimal? rating)
         {
             Id = id;
             Title = title;
@@ -30,6 +30,12 @@ namespace Reading_List.Domain.Models
             Genre = genre;
             Finished = finished;
             Rating = rating;
+        }
+
+        public override string ToString()
+        {
+            return $"{Title} by {Author} ({Year}) - {Pages} pages - Genre: {Genre} - Finished: {Finished}" +
+                   (Finished && Rating.HasValue ? $" - Rating: {Rating}/5" : "");
         }
 
 
