@@ -16,12 +16,12 @@ namespace Reading_List.Application.Services
             _bookValidator = bookValidator;
         }
 
-        public async Task<Result<Book>> AddAsync(Book entity, CancellationToken ct = default)
+        public async Task<Result<Book>> AddAsync(Book entity)
         {
             if (entity is null)
                 return ErrorHandler.EntityNull<Book>();
 
-            var validation = await _bookValidator.ValidateAsync(entity, ct);
+            var validation = await _bookValidator.ValidateAsync(entity);
             if (!validation.IsValid)
             {
                 var message = string.Join("; ", validation.Errors.Select(e => e.ErrorMessage));
@@ -31,12 +31,12 @@ namespace Reading_List.Application.Services
             return await _bookRepository.AddAsync(entity);
         }
 
-        public async Task<Result<Book>> UpdateAsync(Book entity, CancellationToken ct = default)
+        public async Task<Result<Book>> UpdateAsync(Book entity)
         {
             if (entity is null)
                 return ErrorHandler.EntityNull<Book>();
 
-            var validation = await _bookValidator.ValidateAsync(entity, ct);
+            var validation = await _bookValidator.ValidateAsync(entity);
             if (!validation.IsValid)
             {
                 var message = string.Join("; ", validation.Errors.Select(e => e.ErrorMessage));
@@ -46,7 +46,7 @@ namespace Reading_List.Application.Services
             return await _bookRepository.UpdateAsync(entity);
         }
 
-        public async Task<Result<bool>> DeleteAsync(Book entity, CancellationToken ct = default)
+        public async Task<Result<bool>> DeleteAsync(Book entity)
         {
             if (entity is null)
                 return ErrorHandler.EntityNull<bool>();
@@ -54,7 +54,7 @@ namespace Reading_List.Application.Services
             return await _bookRepository.DeleteAsync(entity);
         }
 
-        public async Task<Result<Book>> GetByIdAsync(int id, CancellationToken ct = default)
+        public async Task<Result<Book>> GetByIdAsync(int id)
         {
             var result = await _bookRepository.GetByIdAsync(id);
 
@@ -67,17 +67,17 @@ namespace Reading_List.Application.Services
         }
 
 
-        public async Task<IEnumerable<Result<Book>>> GetAllAsync(CancellationToken ct = default)
+        public async Task<IEnumerable<Result<Book>>> GetAllAsync()
         {
             return await _bookRepository.GetAllAsync();
         }
 
-        public async Task<IEnumerable<Result<Book>>> GetFinishedBooks(CancellationToken ct = default)
+        public async Task<IEnumerable<Result<Book>>> GetFinishedBooks()
         {
             var allBooks = await _bookRepository.GetAllAsync();
             return allBooks.Where(r => r.IsSuccess && r.Value?.Finished == true);
         }
-        public async Task<IEnumerable<Result<Book>>> GetTopRatedBooks(int count, CancellationToken ct = default)
+        public async Task<IEnumerable<Result<Book>>> GetTopRatedBooks(int count)
         {
             if (count <= 0) count = 5;
 
@@ -93,7 +93,7 @@ namespace Reading_List.Application.Services
 
             return topRatedBooks;
         }
-        public async Task<IEnumerable<Result<Book>>> GetBooksByAuthor(string author, CancellationToken ct = default)
+        public async Task<IEnumerable<Result<Book>>> GetBooksByAuthor(string author)
         {
             if (string.IsNullOrWhiteSpace(author))
                 return Enumerable.Empty<Result<Book>>();
@@ -104,7 +104,7 @@ namespace Reading_List.Application.Services
                 .ToList();
             return booksByAuthor;
         }
-        public async Task<Result<Book>> MarkAsFinished(int bookId, CancellationToken ct = default)
+        public async Task<Result<Book>> MarkAsFinished(int bookId)
         {
             var book = _bookRepository.GetByIdAsync(bookId).Result.Value;
             if (book == null)
@@ -113,10 +113,10 @@ namespace Reading_List.Application.Services
             }
 
             book.Finished = true;
-            var updateResult = await UpdateAsync(book, ct);
+            var updateResult = await UpdateAsync(book);
             return updateResult;
         }
-        public async Task<Result<Book>> SetRating(int bookId, decimal rating, CancellationToken ct = default)
+        public async Task<Result<Book>> SetRating(int bookId, decimal rating)
         {
             if (rating < 1.00m || rating > 5.00m)
                 return ErrorHandler.GenericError<Book>("Rating must be between 1 and 5.");
@@ -129,9 +129,9 @@ namespace Reading_List.Application.Services
             book.Finished = true;
             book.Rating = rating;
 
-            return await UpdateAsync(book, ct);
+            return await UpdateAsync(book);
         }
-        public async Task<Result<BooksStats>> GetStatsAsync(CancellationToken ct = default)
+        public async Task<Result<BooksStats>> GetStatsAsync()
         {
             var results = await _bookRepository.GetAllAsync();
 

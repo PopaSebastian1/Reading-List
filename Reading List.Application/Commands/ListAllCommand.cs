@@ -17,7 +17,7 @@ namespace Reading_List.Application.Commands
 
         public async Task ExecuteAsync(CancellationToken ct = default)
         {
-            var books = await bookService.GetAllAsync(ct);
+            var books = await bookService.GetAllAsync();
             if (books.Count() == 0)
             {
                 Console.WriteLine("No books found in the reading list.");

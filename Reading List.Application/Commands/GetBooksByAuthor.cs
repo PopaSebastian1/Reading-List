@@ -25,7 +25,7 @@ namespace Reading_List.Application.Commands
             Console.Write("Enter author name: ");
             var author = Console.ReadLine();
 
-            var booksResult = await _bookService.GetBooksByAuthor(author ?? string.Empty, ct);
+            var booksResult = await _bookService.GetBooksByAuthor(author ?? string.Empty);
 
             foreach (var result in booksResult)
             {

@@ -22,7 +22,7 @@ namespace Reading_List.Application.Commands
 
         public async Task ExecuteAsync(CancellationToken ct = default)
         {
-            var statsResult = await _bookService.GetStatsAsync(ct);
+            var statsResult = await _bookService.GetStatsAsync();
             if (!statsResult.IsSuccess)
             {
                 Console.WriteLine($"Error retrieving stats: {statsResult.ErrorMessage}");

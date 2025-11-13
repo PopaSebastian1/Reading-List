@@ -25,8 +25,8 @@ namespace Reading_List.Application.Commands
                 Console.WriteLine("Invalid ID format.");
                 return;
             }
-
-            var result = await _bookService.MarkAsFinished(id, ct);
+                
+            var result = await _bookService.MarkAsFinished(id);
 
             if (result.IsSuccess)
             {

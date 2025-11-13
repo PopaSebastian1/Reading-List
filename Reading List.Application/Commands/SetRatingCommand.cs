@@ -35,7 +35,7 @@ namespace Reading_List.Application.Commands
                 return;
             }
 
-            var result = await _bookService.SetRating(id, rating, ct);
+            var result = await _bookService.SetRating(id, rating);
             if (result.IsSuccess)
             {
                 Console.WriteLine($"Book {id} marked as finished -> 200 OK");

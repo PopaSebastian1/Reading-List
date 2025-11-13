@@ -6,12 +6,12 @@ namespace Reading_List.Application.Abstractions
     public interface IService<T>
         where T : class, IEntity
     {
-        Task<Result<T>> AddAsync(T entity, CancellationToken ct = default);
-        Task<Result<T>> UpdateAsync(T entity, CancellationToken ct = default);
-        Task<Result<bool>> DeleteAsync(T entity, CancellationToken ct = default);
-        Task<IEnumerable<Result<T>>> GetAllAsync(CancellationToken ct = default);
+        Task<Result<T>> AddAsync(T entity);
+        Task<Result<T>> UpdateAsync(T entity);
+        Task<Result<bool>> DeleteAsync(T entity);
+        Task<IEnumerable<Result<T>>> GetAllAsync();
 
-        Task<Result<T>> GetByIdAsync(int id, CancellationToken ct = default);
+        Task<Result<T>> GetByIdAsync(int id);
 
     }
 }

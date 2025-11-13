@@ -28,12 +28,6 @@ namespace Reading_List.Application.Commands
             var fileName = Console.ReadLine();
             var path = Path.Combine(dataDir, fileName ?? string.Empty);
 
-            if (string.IsNullOrWhiteSpace(path))
-            {
-                Console.WriteLine(ErrorHandler.GenericError<bool>("Path cannot be empty").ErrorMessage);
-                return;
-            }
-
             var result = await _exportService.ExportAsync(path, ct);
             Console.WriteLine(result.IsSuccess
                 ? $"Export succeeded -> {path}"
