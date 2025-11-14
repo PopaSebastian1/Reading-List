@@ -5,8 +5,6 @@ class Program
 {
     static async Task Main()
     {
-        var provider = DIContainer.Build();
-        var menu = provider.GetRequiredService<Menu>();
-        await menu.RunAsync();
+        await AppStarter.RunAsync();
     }
 }

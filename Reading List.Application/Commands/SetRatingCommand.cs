@@ -26,15 +26,15 @@ namespace Reading_List.Application.Commands
 
             if (result.IsSuccess)
             {
-                Console.WriteLine($"Book {id} rated {rating:0.0}/5 → 200 OK");
+                Console.WriteLine($"Book {id} rated {rating:0.0}/5 -> 200 OK");
             }
             else if (result.ErrorMessage?.Contains("not found", StringComparison.OrdinalIgnoreCase) == true)
             {
-                Console.WriteLine($"Book {id} not found → 404 Not Found");
+                Console.WriteLine($"Book {id} not found -> 404 Not Found");
             }
             else
             {
-                Console.WriteLine($"Failed to rate book {id}: {result.ErrorMessage} → 400 Bad Request");
+                Console.WriteLine($"Failed to rate book {id}: {result.ErrorMessage} -> 400 Bad Request");
             }
 
             Console.ResetColor();

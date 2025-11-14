@@ -1,7 +1,7 @@
 Id,Title,Author,Year,Pages,Genre,Finished,Rating
 1,Whispers in the Dust,Amira Patel,2019,384,Fiction,True,4.1
 3,Echoes of Tomorrow,Nadia Volkov,2016,428,Software,True,4.4
-4,The Forgotten Heir,Eleanor Bryce,2008,512,Fantasy,True,5
+4,The Forgotten Heir,Eleanor Bryce,2008,512,Fantasy,False,
 5,Code and ConSoftwareience,Marcus Ito,2020,298,Software,True,4.2
 6,Beneath the Willow Moon,Sophia Anders,2013,402,Romance,False,
 7,Mind Over Matter,Jacob Ellis,2017,289,SelfHelp,True,4.5
