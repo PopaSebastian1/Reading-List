@@ -1,4 +1,5 @@
 ﻿using Reading_List.Application.Abstractions;
+using Reading_List.Application.Handlers;
 
 namespace Reading_List.Application.Commands
 {
@@ -15,8 +16,7 @@ namespace Reading_List.Application.Commands
         }
         public async Task ExecuteAsync(CancellationToken ct = default)
         {
-            Console.Write("Enter number of top rated books to retrieve: ");
-            var input = Int32.TryParse(Console.ReadLine(), out var count) ? count : 5;
+            var count = ConsoleInputHandler.ReadInt("Enter number of top rated books to retrieve: ", v => v > 0);
             var topBooksResult = await _bookService.GetTopRatedBooks(count);
             Console.WriteLine("Top Rated Books:");
             foreach (var result in topBooksResult)

@@ -1,4 +1,5 @@
 ﻿using Reading_List.Application.Abstractions;
+using Reading_List.Application.Handlers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,8 +23,7 @@ namespace Reading_List.Application.Commands
 
         public async Task ExecuteAsync(CancellationToken ct = default)
         {
-            Console.Write("Enter author name: ");
-            var author = Console.ReadLine();
+            var author = ConsoleInputHandler.ReadNonEmptyString("Enter author name: ");
 
             var booksResult = await _bookService.GetBooksByAuthor(author ?? string.Empty);
 

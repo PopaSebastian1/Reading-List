@@ -17,28 +17,24 @@ namespace Reading_List.Application.Commands
 
         public async Task ExecuteAsync(CancellationToken ct = default)
         {
-            Console.Write("Enter the ID of the book to mark as finished: ");
-            var input = Console.ReadLine();
+            var id = ConsoleInputHandler.ReadInt("Enter the ID of the book to mark as finished: ", i => i > 0, ct);
 
-            if (!int.TryParse(input, out var id))
-            {
-                Console.WriteLine("Invalid ID format.");
-                return;
-            }
-                
             var result = await _bookService.MarkAsFinished(id);
 
             if (result.IsSuccess)
             {
                 Console.WriteLine($"Book {id} marked as finished -> 200 OK");
             }
+            else if (result.ErrorMessage?.Contains("not found", StringComparison.OrdinalIgnoreCase) == true)
+            {
+                Console.WriteLine($"Book {id} not found -> 404 Not Found");
+            }
             else
             {
-                if (result.ErrorMessage?.Contains("not found", StringComparison.OrdinalIgnoreCase) == true)
-                    Console.WriteLine($"Book {id} not found -> 404 Not Found");
-                else
-                    Console.WriteLine($"Failed to mark book {id} as finished -> 500 Other error {result.ErrorMessage}");
+                Console.WriteLine($"Failed to mark book {id} as finished -> 500 Other error: {result.ErrorMessage}");
             }
+
+            Console.ResetColor();
         }
     }
 }

@@ -1,63 +1,67 @@
-﻿using Reading_List.Domain.Models;
-
-namespace Reading_List.Application.ErrorHandlers
+﻿namespace Reading_List.Application.Handlers
 {
-    internal static class ConsoleInputHandler
+    public static class ConsoleInputHandler
     {
-        public static async Task<Result<int>> ReadIntAsync(string prompt, Func<int, bool>? validate = null, CancellationToken ct = default)
+        public static int ReadInt(string prompt, Func<int, bool>? validate = null, CancellationToken ct = default)
         {
             while (!ct.IsCancellationRequested)
             {
                 Console.Write(prompt);
                 var raw = Console.ReadLine();
+
                 if (int.TryParse(raw, out var value))
                 {
-                    if (validate is null || validate(value))
-                        return Result<int>.Success(value);
-                    Console.WriteLine("Invalid value.");
+                    if (validate == null || validate(value))
+                        return value;
+
+                    Console.WriteLine("Invalid value. Try again.");
                 }
                 else
                 {
                     Console.WriteLine("Please enter a valid integer.");
                 }
-                await Task.Yield();
             }
-            return Result<int>.Failure("Operation cancelled.");
+
+            throw new OperationCanceledException();
         }
 
-        public static async Task<Result<decimal>> ReadDecimalAsync(string prompt, Func<decimal, bool>? validate = null, CancellationToken ct = default)
+        public static decimal ReadDecimal(string prompt, Func<decimal, bool>? validate = null, CancellationToken ct = default)
         {
             while (!ct.IsCancellationRequested)
             {
                 Console.Write(prompt);
-                var raw = Console.ReadLine();
-                if (decimal.TryParse(raw, out var value))
+                var raw = Console.ReadLine()?.Replace(',', '.'); // acceptă și virgule
+                if (decimal.TryParse(raw, System.Globalization.NumberStyles.Float,
+                    System.Globalization.CultureInfo.InvariantCulture, out var value))
                 {
-                    if (validate is null || validate(value))
-                        return Result<decimal>.Success(value);
-                    Console.WriteLine("Invalid value.");
+                    if (validate == null || validate(value))
+                        return value;
+
+                    Console.WriteLine("Invalid number. Try again.");
                 }
                 else
                 {
                     Console.WriteLine("Please enter a valid number.");
                 }
-                await Task.Yield();
             }
-            return Result<decimal>.Failure("Operation cancelled.");
+
+            throw new OperationCanceledException();
         }
 
-        public static async Task<Result<string>> ReadNonEmptyStringAsync(string prompt, CancellationToken ct = default)
+        public static string ReadNonEmptyString(string prompt, CancellationToken ct = default)
         {
             while (!ct.IsCancellationRequested)
             {
                 Console.Write(prompt);
                 var raw = Console.ReadLine();
+
                 if (!string.IsNullOrWhiteSpace(raw))
-                    return Result<string>.Success(raw.Trim());
-                Console.WriteLine("Value cannot be empty.");
-                await Task.Yield();
+                    return raw.Trim();
+
+                Console.WriteLine("Value cannot be empty. Try again.");
             }
-            return Result<string>.Failure("Operation cancelled.");
+
+            throw new OperationCanceledException();
         }
     }
 }

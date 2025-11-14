@@ -21,9 +21,7 @@ namespace Reading_List.Application.Commands
             var solutionRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, @"..\..\..\.."));
             var dataDir = Path.Combine(solutionRoot, "Reading List.Infrastructure", "Data");
 
-            Console.WriteLine("Enter CSV file paths separated by commas.");
-            Console.Write("Paths: ");
-            var input = Console.ReadLine();
+            var input = ConsoleInputHandler.ReadNonEmptyString("Enter CSV file paths separated by commas: ", ct) ?? string.Empty;   
 
             List<string> rawPaths= input
                 .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)

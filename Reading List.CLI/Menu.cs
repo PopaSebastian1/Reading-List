@@ -18,13 +18,13 @@ namespace Reading_List.CLI
             foreach (var cmd in _commands)
                 Console.WriteLine($"{cmd.Key}. {cmd.Description}");
             Console.WriteLine("X. Exit");
-            Console.Write("Choose option: ");
 
         }
 
         public async Task RunAsync(CancellationToken ct = default)
         {
             PrintMenu();
+            Console.Write("Choose option: ");
             while (!ct.IsCancellationRequested)
             {
                 var input = Console.ReadLine();
@@ -50,6 +50,7 @@ namespace Reading_List.CLI
                     if (command.Key == "C")
                         PrintMenu();
                     Console.Write("Choose option: ");
+
                 }
                 catch (Exception ex)
                 {
