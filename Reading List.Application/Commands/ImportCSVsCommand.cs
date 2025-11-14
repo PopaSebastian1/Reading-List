@@ -7,7 +7,7 @@ namespace Reading_List.Application.Commands
     public sealed class ImportCSVsCommand : ICommand
     {
         public string Key => "1";
-        public string Description => "Import one or more CSV files (comma-separated). Enter for defaults.";
+        public string Description => "Import one or more CSV files (comma-separated).";
 
         private readonly IBookImportService _importExportService;
 
@@ -21,9 +21,7 @@ namespace Reading_List.Application.Commands
             var solutionRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, @"..\..\..\.."));
             var dataDir = Path.Combine(solutionRoot, "Reading List.Infrastructure", "Data");
 
-            Console.WriteLine("Enter CSV file paths separated by commas.");
-            Console.Write("Paths: ");
-            var input = Console.ReadLine();
+            var input = ConsoleInputHandler.ReadNonEmptyString("Enter CSV file paths separated by commas: ", ct) ?? string.Empty;   
 
             List<string> rawPaths= input
                 .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)

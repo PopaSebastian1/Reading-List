@@ -1,11 +1,11 @@
 ﻿using Reading_List.Application.Abstractions;
+using Reading_List.Application.Handlers;
 
 namespace Reading_List.Application.Commands
 {
     public class SetRatingCommand : ICommand
     {
         public string Key => "7";
-
         public string Description => "Rate a Book";
 
         private readonly IBookService _bookService;
@@ -14,39 +14,30 @@ namespace Reading_List.Application.Commands
         {
             _bookService = bookService;
         }
+
         public async Task ExecuteAsync(CancellationToken ct = default)
         {
-            Console.Write("Enter the Book ID to rate: ");
-            int id = Int32.TryParse(Console.ReadLine(), out var bookId) ? bookId : 0;
+            var id = ConsoleInputHandler.ReadInt("Enter the Book ID to rate: ", i => i > 0, ct);
 
-            if (id == 0)
-            {
-                Console.WriteLine("Invalid Book ID format.");
-                return;
-            }
+            var rating = ConsoleInputHandler.ReadDecimal("Enter your rating (1-5): ", r => r >= 1 && r <= 5, ct);
 
-            Console.Write("Enter your rating (1-5): ");
+            // Step 3: Call service
+            var result = await _bookService.SetRating(id, rating);
 
-            decimal rating = decimal.TryParse(Console.ReadLine(), out var bookRating) ? bookRating : 0;
-
-            if (rating < 1 || rating > 5)
-            {
-                Console.WriteLine("Rating must be between 1 and 5.");
-                return;
-            }
-
-            var result = await _bookService.SetRating(id, rating, ct);
             if (result.IsSuccess)
             {
-                Console.WriteLine($"Book {id} marked as finished -> 200 OK");
+                Console.WriteLine($"Book {id} rated {rating:0.0}/5 -> 200 OK");
+            }
+            else if (result.ErrorMessage?.Contains("not found", StringComparison.OrdinalIgnoreCase) == true)
+            {
+                Console.WriteLine($"Book {id} not found -> 404 Not Found");
             }
             else
             {
-                if (result.ErrorMessage?.Contains("not found", StringComparison.OrdinalIgnoreCase) == true)
-                    Console.WriteLine($"Book {id} not found -> 404 Not Found");
-                else
-                    Console.WriteLine($"Error rating book {id}: {result.ErrorMessage} -> 400 Bad Request");
+                Console.WriteLine($"Failed to rate book {id}: {result.ErrorMessage} -> 400 Bad Request");
             }
+
+            Console.ResetColor();
         }
     }
 }

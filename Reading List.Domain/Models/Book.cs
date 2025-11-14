@@ -34,7 +34,7 @@ namespace Reading_List.Domain.Models
 
         public override string ToString()
         {
-            return $"{Title} by {Author} ({Year}) - {Pages} pages - Genre: {Genre} - Finished: {Finished}" +
+            return $"{Id}: {Title} by {Author} ({Year}) - {Pages} pages - Genre: {Genre} - Finished: {Finished}" +
                    (Finished && Rating.HasValue ? $" - Rating: {Rating}/5" : "");
         }
 

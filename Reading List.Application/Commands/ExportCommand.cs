@@ -24,14 +24,8 @@ namespace Reading_List.Application.Commands
         {
             var solutionRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, @"..\..\..\.."));
             var dataDir = Path.Combine(solutionRoot, "Reading List.Infrastructure", "Data");
-            Console.Write("Enter export file path (e.g., books.json or books.csv): ");
-            var path= dataDir+ Console.ReadLine();
-
-            if (string.IsNullOrWhiteSpace(path))
-            {
-                Console.WriteLine(ErrorHandler.GenericError<bool>("Path cannot be empty").ErrorMessage);
-                return;
-            }
+            var fileName = ConsoleInputHandler.ReadNonEmptyString("Enter export file name (e.g., books.json or books.csv): ");
+            var path = Path.Combine(dataDir, fileName ?? string.Empty);
 
             var result = await _exportService.ExportAsync(path, ct);
             Console.WriteLine(result.IsSuccess

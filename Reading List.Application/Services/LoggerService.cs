@@ -9,7 +9,6 @@ namespace Reading_List.Application.Services
 {
     public class LoggerService : ILoggerService, IDisposable
     {
-        private readonly string logFilePath;
         private readonly StreamWriter logStreamWriter;
 
         public LoggerService()

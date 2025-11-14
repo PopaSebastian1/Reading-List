@@ -1,21 +1,21 @@
 Id,Title,Author,Year,Pages,Genre,Finished,Rating
 1,"Whispers in the Dust","Amira Patel",2019,384,"Fiction",true,4.1
-2,"The Binary Heart","Lucas Fernandes",2023,310,"Software",false,3.7
+2,"The Binary Heart",2023,"Lucas Fernandes",2023,310,"Software",false,3.7
 3,"Echoes of Tomorrow","Nadia Volkov",2016,428,"Software",true,4.4
-4,"The Forgotten Heir","Eleanor Bryce",2008,512,"Fantasy",false,3.9
+4,"The Forgotten Heir","Eleanor Bryce",2008,512,"Fantasy",false
 5,"Code and ConSoftwareience","Marcus Ito",2020,298,"Software",true,4.2
-6,"Beneath the Willow Moon","Sophia Anders",2013,402,"Romance",false,3.8
+6,"Beneath the Willow Moon","Sophia Anders",2013,402,"Romance",false
 7,"Mind Over Matter","Jacob Ellis",2017,289,"SelfHelp",true,4.5
 8,"The Final Equation","Ahmed Rahman",2022,376,"Thriller",true,4.0
-9,"Tides of Glass","Lina Sørensen",2010,448,"Fantasy",false,3.6
+9,"Tides of Glass","Lina Sørensen",2010,448,"Fantasy",false
 10,"The Innovator’s Dilemma Revisited","Chen Wei",2018,354,"NonFiction",true,4.3
 11,"A World Between Stars","Elena Kuznetsova",2024,512,"Software",true,4.6
-12,"The Price of Silence","Owen Fitzgerald",2005,398,"Mystery",false,3.5
+12,"The Price of Silence","Owen Fitzgerald",2005,398,"Mystery",false
 13,"Hearts Under Fire","Natalie Cruz",2015,275,"Romance",true,4.1
-14,"The Coded Mind","Yasmin Ortega",2021,332,"Software",false,3.9
+14,"The Coded Mind","Yasmin Ortega",2021,332,"Software",false
 15,"Beyond the Riverbend","Samuel Boateng",2011,480,"History",true,4.4
-16,"Into the Abyss","Richard Monroe",2007,366,"Thriller",false,3.7
+16,"Into the Abyss","Richard Monroe",2007,366,"Thriller",false
 17,"The Wandering Star","Chiara Bellini",2020,614,"Fantasy",true,4.9
-18,"Hidden Truths","Emily Johansson",2009,451,"Mystery",false,3.4
+18,"Hidden Truths","Emily Johansson",2009,451,"Mystery",false
 19,"The Empath’s Guide to Clarity","Ruth Kim",2022,272,"SelfHelp",true,4.8
-20,"Portraits of the Unknown","Andre Dubois",2014,390,"Biography",false,3.6
+20,"Portraits of the Unknown","Andre Dubois",2014,390,"Biography",false
