@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Reading_List.Application.Abstractions;
 using Reading_List.Application.Handlers;
+using Reading_List.Domain.Dtos;
 using Reading_List.Domain.Models;
 
 namespace Reading_List.Application.Services
@@ -8,128 +9,157 @@ namespace Reading_List.Application.Services
     public sealed class BookService : IBookService
     {
         private readonly IRepository<Book> _bookRepository;
-        private readonly IValidator<Book> _bookValidator;
+        private readonly IValidator<BookDto> _bookValidator;
+        private readonly IMapper<Book, BookDto> _mapper;
 
-        public BookService(IRepository<Book> bookRepository, IValidator<Book> bookValidator)
+        public BookService(IRepository<Book> bookRepository, IValidator<BookDto> bookValidator, IMapper<Book, BookDto> mapper)
         {
             _bookRepository = bookRepository;
             _bookValidator = bookValidator;
+            _mapper = mapper;
         }
 
-        public async Task<Result<Book>> AddAsync(Book entity)
+        public async Task<Result<BookDto>> AddAsync(BookDto dto)
         {
-            if (entity is null)
-                return ErrorHandler.EntityNull<Book>();
+            if (dto is null)
+                return ErrorHandler.EntityNull<BookDto>();
 
-            var validation = await _bookValidator.ValidateAsync(entity);
+            var validation = await _bookValidator.ValidateAsync(dto);
             if (!validation.IsValid)
             {
                 var message = string.Join("; ", validation.Errors.Select(e => e.ErrorMessage));
-                return ErrorHandler.GenericError<Book>(message);
+                return Result<BookDto>.Failure(message);
             }
 
-            return await _bookRepository.AddAsync(entity);
+            var entity = _mapper.toEntity(dto);
+            var addResult = await _bookRepository.AddAsync(entity);
+
+            return addResult.IsSuccess && addResult.Value is not null
+                ? Result<BookDto>.Success(_mapper.toDto(addResult.Value))
+                : Result<BookDto>.Failure(addResult.ErrorMessage ?? "Failed to add book.");
         }
 
-        public async Task<Result<Book>> UpdateAsync(Book entity)
+        public async Task<Result<BookDto>> UpdateAsync(BookDto dto)
         {
-            if (entity is null)
-                return ErrorHandler.EntityNull<Book>();
+            if (dto is null)
+                return ErrorHandler.EntityNull<BookDto>();
 
-            var validation = await _bookValidator.ValidateAsync(entity);
+            var validation = await _bookValidator.ValidateAsync(dto);
+            var entity = _mapper.toEntity(dto);
             if (!validation.IsValid)
             {
                 var message = string.Join("; ", validation.Errors.Select(e => e.ErrorMessage));
-                return ErrorHandler.GenericError<Book>(message);
+                return ErrorHandler.GenericError<BookDto>(message);
             }
 
-            return await _bookRepository.UpdateAsync(entity);
+            var updateResult = await _bookRepository.UpdateAsync(entity);
+            return updateResult.IsSuccess && updateResult.Value is not null
+                ? Result<BookDto>.Success(_mapper.toDto(updateResult.Value))
+                : Result<BookDto>.Failure(updateResult.ErrorMessage ?? "Failed to update book.");
         }
 
-        public async Task<Result<bool>> DeleteAsync(Book entity)
+        public async Task<Result<bool>> DeleteAsync(BookDto dto)
         {
-            if (entity is null)
+            if (dto is null)
                 return ErrorHandler.EntityNull<bool>();
 
+            var entity = _mapper.toEntity(dto);
             return await _bookRepository.DeleteAsync(entity);
         }
 
-        public async Task<Result<Book>> GetByIdAsync(int id)
+        public async Task<Result<BookDto>> GetByIdAsync(int id)
         {
             var result = await _bookRepository.GetByIdAsync(id);
 
             if (!result.IsSuccess || result.Value is null)
             {
-                return ErrorHandler.EntityNotFound<Book, int>(id);
+                return ErrorHandler.EntityNotFound<BookDto, int>(id);
             }
 
-            return result;
+            return Result<BookDto>.Success(_mapper.toDto(result.Value));
         }
 
 
-        public async Task<IEnumerable<Result<Book>>> GetAllAsync()
+        public async Task<IEnumerable<Result<BookDto>>> GetAllAsync()
         {
-            return await _bookRepository.GetAllAsync();
+            var all = await _bookRepository.GetAllAsync();
+            return all.Select(r =>
+                r.IsSuccess && r.Value is not null
+                    ? Result<BookDto>.Success(_mapper.toDto(r.Value))
+                    : Result<BookDto>.Failure(r.ErrorMessage ?? "Unknown error"));
         }
 
-        public async Task<IEnumerable<Result<Book>>> GetFinishedBooks()
+        public async Task<IEnumerable<Result<BookDto>>> GetFinishedBooks()
         {
             var allBooks = await _bookRepository.GetAllAsync();
-            return allBooks.Where(r => r.IsSuccess && r.Value?.Finished == true);
+            var bookDtos = new List<BookDto>();
+            foreach (var book in allBooks)
+            {
+                bookDtos.Add(_mapper.toDto(book.Value!));
+            }
+            return bookDtos.Where(r => r.Finished)
+                .Select(Result<BookDto>.Success)
+                .ToList();
         }
-        public async Task<IEnumerable<Result<Book>>> GetTopRatedBooks(int count)
+        public async Task<IEnumerable<Result<BookDto>>> GetTopRatedBooks(int count)
         {
             if (count <= 0) count = 5;
+            var all = await _bookRepository.GetAllAsync();
 
-            var allBooks = await _bookRepository.GetAllAsync();
-
-            var topRatedBooks = allBooks
+            return all
                 .Where(r => r.IsSuccess && r.Value?.Rating.HasValue == true)
                 .Select(r => r.Value!)
                 .OrderByDescending(b => b.Rating)
                 .Take(count)
-                .Select(Result<Book>.Success)
+                .Select(b => Result<BookDto>.Success(_mapper.toDto(b)))
                 .ToList();
-
-            return topRatedBooks;
         }
-        public async Task<IEnumerable<Result<Book>>> GetBooksByAuthor(string author)
+
+
+        public async Task<IEnumerable<Result<BookDto>>> GetBooksByAuthor(string author)
         {
             if (string.IsNullOrWhiteSpace(author))
-                return Enumerable.Empty<Result<Book>>();
+                return Enumerable.Empty<Result<BookDto>>();
 
-            var allBooks = await _bookRepository.GetAllAsync();
-            var booksByAuthor = allBooks
-                .Where(r => r.IsSuccess && r.Value != null && r.Value.Author.Equals(author, StringComparison.OrdinalIgnoreCase))
-                .ToList();
-            return booksByAuthor;
+            var all = await _bookRepository.GetAllAsync();
+            return all
+                .Where(r => r.IsSuccess &&
+                            r.Value!.Author.Equals(author, StringComparison.OrdinalIgnoreCase))
+                .Select(r => Result<BookDto>.Success(_mapper.toDto(r.Value!)));
         }
-        public async Task<Result<Book>> MarkAsFinished(int bookId)
-        {
-            var book = _bookRepository.GetByIdAsync(bookId).Result.Value;
-            if (book == null)
-            {
-                return ErrorHandler.EntityNotFound<Book, int>(bookId);
-            }
 
-            book.Finished = true;
-            var updateResult = await UpdateAsync(book);
-            return updateResult;
-        }
-        public async Task<Result<Book>> SetRating(int bookId, decimal rating)
+        public async Task<Result<BookDto>> MarkAsFinished(int bookId)
         {
-            if (rating < 1.00m || rating > 5.00m)
-                return ErrorHandler.GenericError<Book>("Rating must be between 1 and 5.");
+            var getResult = await _bookRepository.GetByIdAsync(bookId);
+            if (!getResult.IsSuccess || getResult.Value is null)
+                return ErrorHandler.EntityNotFound<BookDto, int>(bookId);
+
+            var book = getResult.Value;
+            book.Finished = "yes";
+
+            var updateResult = await _bookRepository.UpdateAsync(book);
+            return updateResult.IsSuccess && updateResult.Value is not null
+                ? Result<BookDto>.Success(_mapper.toDto(updateResult.Value))
+                : Result<BookDto>.Failure(updateResult.ErrorMessage ?? "Failed to mark finished.");
+        }
+
+        public async Task<Result<BookDto>> SetRating(int bookId, decimal rating)
+        {
+            if (rating < 1m || rating > 5m)
+                return Result<BookDto>.Failure("Rating must be between 1 and 5.");
 
             var getResult = await _bookRepository.GetByIdAsync(bookId);
             if (!getResult.IsSuccess || getResult.Value is null)
-                return ErrorHandler.EntityNotFound<Book, int>(bookId);
+                return ErrorHandler.EntityNotFound<BookDto, int>(bookId);
 
             var book = getResult.Value;
-            book.Finished = true;
+            book.Finished = "yes";
             book.Rating = rating;
 
-            return await UpdateAsync(book);
+            var updateResult = await _bookRepository.UpdateAsync(book);
+            return updateResult.IsSuccess && updateResult.Value is not null
+                ? Result<BookDto>.Success(_mapper.toDto(updateResult.Value))
+                : Result<BookDto>.Failure(updateResult.ErrorMessage ?? "Failed to set rating.");
         }
         public async Task<Result<BooksStats>> GetStatsAsync()
         {
@@ -141,7 +171,7 @@ namespace Reading_List.Application.Services
                 .ToList();
 
             var total = books.Count;
-            var finished = books.Count(b => b.Finished);
+            var finished = books.Count(b => b.isFinished());
 
             var ratings = books.Where(b => b.Rating.HasValue).Select(b => b.Rating!.Value).ToList();
             decimal? avgRating = ratings.Count > 0 ? Math.Round(ratings.Average(), 2) : null;

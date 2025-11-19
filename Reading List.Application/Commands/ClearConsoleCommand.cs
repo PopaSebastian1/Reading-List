@@ -6,10 +6,10 @@ namespace Reading_List.Application.Commands
     {
         public string Key => "C";
         public string Description => "Clear Console";
-        public Task ExecuteAsync(CancellationToken ct = default)
+        public Task<string> ExecuteAsync(CancellationToken ct = default)
         {
             Console.Clear();
-            return Task.CompletedTask;
+            return Task.FromResult("Console cleared.");
         }
     }
 }

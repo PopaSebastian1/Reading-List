@@ -11,32 +11,24 @@ namespace Reading_List.Domain.Models
     public class Book : IEntity
     {
         public int Id { get; set; }
-        public string Title { get; set; }
-        public string Author { get; set; }
+        public string Title { get; set; } = string.Empty;
+        public string Author { get; set; } = string.Empty;
         public int Year { get; set; }
         public int Pages { get; set; }
         public Genre Genre { get; set; }
-        public bool Finished { get; set; }
+        public string Finished { get; set; } = string.Empty;
         public decimal? Rating { get; set; }
 
-
-        public Book(int id, string title, string author, int year, int pages, Genre genre, bool finished, decimal? rating)
-        {
-            Id = id;
-            Title = title;
-            Author = author;
-            Year = year;
-            Pages = pages;
-            Genre = genre;
-            Finished = finished;
-            Rating = rating;
+        public bool isFinished()
+           {
+            var trueVariants = new HashSet<string>
+            {
+                "yes", "true", "1", "y", "t"
+            };
+            return trueVariants.Contains(Finished.Trim().ToLower());
         }
 
-        public override string ToString()
-        {
-            return $"{Id}: {Title} by {Author} ({Year}) - {Pages} pages - Genre: {Genre} - Finished: {Finished}" +
-                   (Finished && Rating.HasValue ? $" - Rating: {Rating}/5" : "");
-        }
+
 
 
     }

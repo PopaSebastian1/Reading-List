@@ -20,27 +20,29 @@ namespace Reading_List.Application.Commands
             _bookService = bookService;
         }
 
-        public async Task ExecuteAsync(CancellationToken ct = default)
+        public async Task<string> ExecuteAsync(CancellationToken ct = default)
         {
             var statsResult = await _bookService.GetStatsAsync();
             if (!statsResult.IsSuccess)
             {
-                Console.WriteLine($"Error retrieving stats: {statsResult.ErrorMessage}");
-                return;
+                return $"Error retrieving stats: {statsResult.ErrorMessage}";
             }
+
+            string pagesByGenre=statsResult.Value!.PagesByGenre.Any()?
+                string.Join(Environment.NewLine, statsResult.Value.PagesByGenre.Select(kvp => $"  - {kvp.Key}: {kvp.Value} pages"))
+                : "  N/A";
 
             var stats = statsResult.Value;
-            Console.WriteLine();
-            Console.WriteLine("=== Reading List Stats ===");
-            Console.WriteLine($"Total books   : {stats!.TotalBooks}");
-            Console.WriteLine($"Finished      : {stats.FinishedCount}");
-            Console.WriteLine($"Average rating: {(stats.AverageRating.HasValue ? stats.AverageRating.Value.ToString("0.00") : "N/A")}");
-            Console.WriteLine("Pages by genre:");
-            foreach (var kv in stats.PagesByGenre.OrderBy(k => k.Key.ToString()))
-            {
-                Console.WriteLine($" - {kv.Key}: {kv.Value}");
-
-            }
+            return $"""
+            
+            === Reading List Stats ===
+            Total books   : {stats.TotalBooks}
+            Finished      : {stats.FinishedCount}
+            Average rating: {(stats.AverageRating.HasValue ? stats.AverageRating.Value.ToString("0.00") : "N/A")}
+            Pages by genre:
+            {pagesByGenre}
+            """;
+            
         }
     }
 }

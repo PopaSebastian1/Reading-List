@@ -13,26 +13,17 @@ namespace Reading_List.Application.Commands
         {
             _bookService = bookService;
         }
-        public async Task ExecuteAsync(CancellationToken ct = default)
+        public async Task<string> ExecuteAsync(CancellationToken ct = default)
         {
             var finishedResults = await _bookService.GetFinishedBooks();
 
-            var finishedBooks = finishedResults
-                .Where(r => r.IsSuccess && r.Value is not null)
-                .Select(r => r.Value!)
-                .ToList();
-
-            if (!finishedBooks.Any())
+            if (!finishedResults.Any())
             {
-                Console.WriteLine("No finished books found.");
-                return;
+                return "No finished books found.";
             }
 
-            Console.WriteLine("Finished Books:");
-            foreach (var book in finishedBooks)
-            {
-                Console.WriteLine($"{book.ToString()}");
-            }
+            return "Finished Books:\n" + string.Join("\n", finishedResults.Select(b => b.ToString()));
+            
         }
     }
 }

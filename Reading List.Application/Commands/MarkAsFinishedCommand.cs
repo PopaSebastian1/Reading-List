@@ -15,7 +15,7 @@ namespace Reading_List.Application.Commands
             _bookService = bookService;
         }
 
-        public async Task ExecuteAsync(CancellationToken ct = default)
+        public async Task<string> ExecuteAsync(CancellationToken ct = default)
         {
             var id = ConsoleInputHandler.ReadInt("Enter the ID of the book to mark as finished: ", i => i > 0, ct);
 
@@ -23,18 +23,16 @@ namespace Reading_List.Application.Commands
 
             if (result.IsSuccess)
             {
-                Console.WriteLine($"Book {id} marked as finished -> 200 OK");
+                return $"Book {id} marked as finished -> 200 OK";
             }
             else if (result.ErrorMessage?.Contains("not found", StringComparison.OrdinalIgnoreCase) == true)
             {
-                Console.WriteLine($"Book {id} not found -> 404 Not Found");
+                return $"Book {id} not found -> 404 Not Found";
             }
             else
             {
-                Console.WriteLine($"Failed to mark book {id} as finished -> 500 Other error: {result.ErrorMessage}");
+                return $"Failed to mark book {id} as finished -> 500 Other error: {result.ErrorMessage}";
             }
-
-            Console.ResetColor();
         }
     }
 }

@@ -11,6 +11,8 @@ namespace Reading_List.Domain.Models
         public bool IsSuccess { get; set; }
         public T? Value { get; set; }
         public string? ErrorMessage { get; set; }
+
+        public Exception? Exception { get; set; }
         public static Result<T> Success(T value)
         {
             return new Result<T>
@@ -19,9 +21,9 @@ namespace Reading_List.Domain.Models
                 Value = value
             };
         }
-        public static Result<T> Failure(string errorMessage, T? value = default) =>
-           new() { IsSuccess = false, ErrorMessage = errorMessage, Value = value };
-    
+        public static Result<T> Failure(string errorMessage, T? value = default, Exception? exception = null) =>
+           new() { IsSuccess = false, ErrorMessage = errorMessage, Value = value, Exception = exception };
+
 }
 }
 

@@ -46,7 +46,8 @@ namespace Reading_List.CLI
 
                 try
                 {
-                    await command.ExecuteAsync(ct);
+                    var result=await command.ExecuteAsync(ct);
+                    Console.WriteLine(result);
                     if (command.Key == "C")
                         PrintMenu();
                     Console.Write("Choose option: ");

@@ -13,14 +13,14 @@ namespace Reading_List.Application.Commands
         public string Key => "8";
         public string Description => "Export books to a file (.json or .csv)";
 
-        private readonly IBookExportService _exportService;
+        private readonly IBookExportHandler _exportService;
 
-        public ExportBooksCommand(IBookExportService exportService)
+        public ExportBooksCommand(IBookExportHandler exportService)
         {
             _exportService = exportService;
         }
 
-        public async Task ExecuteAsync(CancellationToken ct = default)
+        public async Task<string> ExecuteAsync(CancellationToken ct = default)
         {
             var solutionRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, @"..\..\..\.."));
             var dataDir = Path.Combine(solutionRoot, "Reading List.Infrastructure", "Data");
@@ -28,9 +28,9 @@ namespace Reading_List.Application.Commands
             var path = Path.Combine(dataDir, fileName ?? string.Empty);
 
             var result = await _exportService.ExportAsync(path, ct);
-            Console.WriteLine(result.IsSuccess
+            return result.IsSuccess
                 ? $"Export succeeded -> {path}"
-                : $"Export failed: {result.ErrorMessage}");
+                : $"Export failed: {result.ErrorMessage}";
         }
     }
 }

@@ -9,14 +9,14 @@ namespace Reading_List.Application.Commands
         public string Key => "1";
         public string Description => "Import one or more CSV files (comma-separated).";
 
-        private readonly IBookImportService _importExportService;
+        private readonly IBookImportHandler _importExportService;
 
-        public ImportCSVsCommand(IBookImportService bookImportExportService)
+        public ImportCSVsCommand(IBookImportHandler bookImportExportService)
         {
             _importExportService = bookImportExportService;
         }
 
-        public async Task ExecuteAsync(CancellationToken ct = default)
+        public async Task<string> ExecuteAsync(CancellationToken ct = default)
         {
             var solutionRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, @"..\..\..\.."));
             var dataDir = Path.Combine(solutionRoot, "Reading List.Infrastructure", "Data");
@@ -58,9 +58,9 @@ namespace Reading_List.Application.Commands
                 importResult = ErrorHandler.GenericError<int>($"An error occurred during import: {ex.Message}");
             }
 
-            Console.WriteLine(importResult.IsSuccess
+            return importResult.IsSuccess
                 ? $"Successfully imported {importResult.Value} book(s)."
-                : $"Import failed: {importResult.ErrorMessage}");
+                : $"Import failed: {importResult.ErrorMessage}";
         }
     }
 }

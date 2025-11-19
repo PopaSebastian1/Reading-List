@@ -11,7 +11,7 @@ namespace Reading_List.Application.Abstractions
         string Key { get; }
         string Description { get; }
 
-        Task ExecuteAsync(CancellationToken ct = default);
+        Task<string> ExecuteAsync(CancellationToken ct = default);
 
     }
 }

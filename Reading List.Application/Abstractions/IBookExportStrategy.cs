@@ -9,7 +9,7 @@ namespace Reading_List.Application.Abstractions
 {
     public interface IBookExportStrategy
     {
-        IEnumerable<string> SupportedExtensions { get; }
+        string SupportedExtensions { get; }
         Task<Result<bool>> ExportAsync(IEnumerable<Book> books, string filePath, CancellationToken ct = default);
     }
 }
