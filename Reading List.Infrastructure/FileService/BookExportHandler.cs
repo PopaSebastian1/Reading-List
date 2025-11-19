@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace Reading_List.Infrastructure.FileService
 {
-    public sealed class BookExportService : IBookExportService
+    public sealed class BookExportHandler : IBookExportHandler
     {
         private readonly IEnumerable<IBookExportStrategy> _strategies;
         private readonly IRepository<Book> _repository;
 
-        public BookExportService(IEnumerable<IBookExportStrategy> strategies,
+        public BookExportHandler(IEnumerable<IBookExportStrategy> strategies,
                                  IRepository<Book> repository,
                                  ILoggerService logger)
         {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Reading_List.Application.Abstractions
 {
-    public interface IBookImportService
+    public interface IBookImportHandler
     {
         Task<Result<int>> ImportAsync(IEnumerable<string> csvFiles, CancellationToken ct = default);
     }

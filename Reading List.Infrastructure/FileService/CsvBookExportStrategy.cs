@@ -13,7 +13,7 @@ namespace Reading_List.Infrastructure.FileService
 {
     public sealed class CsvBookExportStrategy : IBookExportStrategy
     {
-        public IEnumerable<string> SupportedExtensions => new[] { ".csv" };
+        public string SupportedExtensions => ".csv";
 
         public async Task<Result<bool>> ExportAsync(IEnumerable<Book> books, string filePath, CancellationToken ct = default)
         {

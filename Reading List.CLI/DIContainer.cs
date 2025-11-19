@@ -2,7 +2,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using Reading_List.Application.Abstractions;
 using Reading_List.Application.Commands;
+using Reading_List.Application.Mappers;
 using Reading_List.Application.Services;
+using Reading_List.Domain.Dtos;
 using Reading_List.Domain.Models;
 using Reading_List.Domain.Validators;
 using Reading_List.Infrastructure.FileService;
@@ -16,19 +18,17 @@ namespace Reading_List.CLI
         {
             var services = new ServiceCollection();
 
-            // Infrastructure / Repositories
             services.AddSingleton<IRepository<Book>>(new InMemoryRepository<int, Book>(b => b.Id));
-            services.AddSingleton<IBookImportService, BookImportService>();
+            services.AddSingleton<IBookImportHandler, BookImportHandler>();
             services.AddSingleton<IBookExportStrategy, JsonBookExportStrategy>();
             services.AddSingleton<IBookExportStrategy, CsvBookExportStrategy>();
-            services.AddSingleton<IBookExportService, BookExportService>();
+            services.AddSingleton<IBookExportHandler, BookExportHandler>();
             services.AddSingleton<ILoggerService, LoggerService>();
 
-            // Application services & validators
+            services.AddSingleton<IMapper<Book, BookDto>, BookMapper>();
+            services.AddSingleton<IValidator<BookDto>, BookValidator>();
             services.AddSingleton<IBookService, BookService>();
-            services.AddSingleton<IValidator<Book>, BookValidator>();
 
-            // CLI commands
             services.AddSingleton<ICommand, ImportCSVsCommand>();
             services.AddSingleton<ICommand, ListAllCommand>();
             services.AddSingleton<ICommand, GetTopRatedCommand>();
@@ -40,7 +40,6 @@ namespace Reading_List.CLI
             services.AddSingleton<ICommand, ExportBooksCommand>();
             services.AddSingleton<ICommand, GetStatsCommand>();
 
-            // CLI Menu
             services.AddSingleton<Menu>();
 
             return services.BuildServiceProvider();

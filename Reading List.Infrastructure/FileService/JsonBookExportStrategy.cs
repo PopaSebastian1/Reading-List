@@ -11,7 +11,7 @@ namespace Reading_List.Infrastructure.FileService
 {
     public sealed class JsonBookExportStrategy : IBookExportStrategy
     {
-        public IEnumerable<string> SupportedExtensions => new[] { ".json" };
+        public string SupportedExtensions => ".json";
 
         public async Task<Result<bool>> ExportAsync(IEnumerable<Book> books, string filePath, CancellationToken ct = default)
         {
