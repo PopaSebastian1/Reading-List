@@ -1,0 +1,192 @@
+[
+  {
+    "Id": 1,
+    "Title": "Whispers in the Dust",
+    "Author": "Amira Patel",
+    "Year": 2019,
+    "Pages": 384,
+    "Genre": 0,
+    "Finished": "true",
+    "Rating": 4.1
+  },
+  {
+    "Id": 3,
+    "Title": "Echoes of Tomorrow",
+    "Author": "Nadia Volkov",
+    "Year": 2016,
+    "Pages": 428,
+    "Genre": 5,
+    "Finished": "true",
+    "Rating": 4.4
+  },
+  {
+    "Id": 4,
+    "Title": "The Forgotten Heir",
+    "Author": "Eleanor Bryce",
+    "Year": 2008,
+    "Pages": 512,
+    "Genre": 4,
+    "Finished": "yes",
+    "Rating": 4.99
+  },
+  {
+    "Id": 5,
+    "Title": "Code and ConSoftwareience",
+    "Author": "Marcus Ito",
+    "Year": 2020,
+    "Pages": 298,
+    "Genre": 5,
+    "Finished": "true",
+    "Rating": 4.2
+  },
+  {
+    "Id": 6,
+    "Title": "Beneath the Willow Moon",
+    "Author": "Sophia Anders",
+    "Year": 2013,
+    "Pages": 402,
+    "Genre": 8,
+    "Finished": "false",
+    "Rating": null
+  },
+  {
+    "Id": 7,
+    "Title": "Mind Over Matter",
+    "Author": "Jacob Ellis",
+    "Year": 2017,
+    "Pages": 289,
+    "Genre": 10,
+    "Finished": "true",
+    "Rating": 4.5
+  },
+  {
+    "Id": 8,
+    "Title": "The Final Equation",
+    "Author": "Ahmed Rahman",
+    "Year": 2022,
+    "Pages": 376,
+    "Genre": 9,
+    "Finished": "true",
+    "Rating": 4.0
+  },
+  {
+    "Id": 9,
+    "Title": "Tides of Glass",
+    "Author": "Lina S\uFFFDrensen",
+    "Year": 2010,
+    "Pages": 448,
+    "Genre": 4,
+    "Finished": "false",
+    "Rating": null
+  },
+  {
+    "Id": 10,
+    "Title": "The Innovator\uFFFDs Dilemma Revisited",
+    "Author": "Chen Wei",
+    "Year": 2018,
+    "Pages": 354,
+    "Genre": 1,
+    "Finished": "true",
+    "Rating": 4.3
+  },
+  {
+    "Id": 11,
+    "Title": "A World Between Stars",
+    "Author": "Elena Kuznetsova",
+    "Year": 2024,
+    "Pages": 512,
+    "Genre": 5,
+    "Finished": "true",
+    "Rating": 4.6
+  },
+  {
+    "Id": 12,
+    "Title": "The Price of Silence",
+    "Author": "Owen Fitzgerald",
+    "Year": 2005,
+    "Pages": 398,
+    "Genre": 2,
+    "Finished": "false",
+    "Rating": null
+  },
+  {
+    "Id": 13,
+    "Title": "Hearts Under Fire",
+    "Author": "Natalie Cruz",
+    "Year": 2015,
+    "Pages": 275,
+    "Genre": 8,
+    "Finished": "true",
+    "Rating": 4.1
+  },
+  {
+    "Id": 14,
+    "Title": "The Coded Mind",
+    "Author": "Yasmin Ortega",
+    "Year": 2021,
+    "Pages": 332,
+    "Genre": 5,
+    "Finished": "false",
+    "Rating": null
+  },
+  {
+    "Id": 15,
+    "Title": "Beyond the Riverbend",
+    "Author": "Samuel Boateng",
+    "Year": 2011,
+    "Pages": 480,
+    "Genre": 7,
+    "Finished": "true",
+    "Rating": 4.4
+  },
+  {
+    "Id": 16,
+    "Title": "Into the Abyss",
+    "Author": "Richard Monroe",
+    "Year": 2007,
+    "Pages": 366,
+    "Genre": 9,
+    "Finished": "false",
+    "Rating": null
+  },
+  {
+    "Id": 17,
+    "Title": "The Wandering Star",
+    "Author": "Chiara Bellini",
+    "Year": 2020,
+    "Pages": 614,
+    "Genre": 4,
+    "Finished": "true",
+    "Rating": 4.9
+  },
+  {
+    "Id": 18,
+    "Title": "Hidden Truths",
+    "Author": "Emily Johansson",
+    "Year": 2009,
+    "Pages": 451,
+    "Genre": 2,
+    "Finished": "false",
+    "Rating": null
+  },
+  {
+    "Id": 19,
+    "Title": "The Empath\uFFFDs Guide to Clarity",
+    "Author": "Ruth Kim",
+    "Year": 2022,
+    "Pages": 272,
+    "Genre": 10,
+    "Finished": "true",
+    "Rating": 4.8
+  },
+  {
+    "Id": 20,
+    "Title": "Portraits of the Unknown",
+    "Author": "Andre Dubois",
+    "Year": 2014,
+    "Pages": 390,
+    "Genre": 6,
+    "Finished": "false",
+    "Rating": null
+  }
+]

@@ -8,6 +8,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Data\books_part1.csv" />
+    <None Remove="Data\books_part2.csv" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Data\books_part1.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\books_part2.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CsvHelper" Version="33.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Reading List.Application\Reading List.Application.csproj" />
     <ProjectReference Include="..\Reading List.Domain\Reading List.Domain.csproj" />
   </ItemGroup>

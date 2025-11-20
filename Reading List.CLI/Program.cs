@@ -1,2 +1,10 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using Microsoft.Extensions.DependencyInjection;
+using Reading_List.CLI;
+
+class Program
+{
+    static async Task Main()
+    {
+        await AppStarter.RunAsync();
+    }
+}

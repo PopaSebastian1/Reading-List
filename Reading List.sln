@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reading List.CLI", "Reading
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reading List.Domain", "Reading List.Domain\Reading List.Domain.csproj", "{F493E639-BB9B-4667-9035-66D34706410F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reading List.Tests", "Reading List.Tests\Reading List.Tests.csproj", "{B3495971-0D22-46F7-A38E-2A545C0F9BD9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{F493E639-BB9B-4667-9035-66D34706410F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F493E639-BB9B-4667-9035-66D34706410F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F493E639-BB9B-4667-9035-66D34706410F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3495971-0D22-46F7-A38E-2A545C0F9BD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3495971-0D22-46F7-A38E-2A545C0F9BD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3495971-0D22-46F7-A38E-2A545C0F9BD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3495971-0D22-46F7-A38E-2A545C0F9BD9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
