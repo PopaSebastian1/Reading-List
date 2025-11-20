@@ -1,4 +1,6 @@
-﻿namespace Reading_List.Application.Handlers
+﻿using Reading_List.Domain.Exceptions;
+
+namespace Reading_List.Application.Handlers
 {
     public static class ConsoleInputHandler
     {
@@ -8,20 +10,14 @@
             {
                 Console.Write(prompt);
                 var raw = Console.ReadLine();
-
                 if (int.TryParse(raw, out var value))
                 {
                     if (validate == null || validate(value))
                         return value;
-
-                    Console.WriteLine("Invalid value. Try again.");
+                    throw new InvalidInputException($"Invalid integer '{value}'.");
                 }
-                else
-                {
-                    Console.WriteLine("Please enter a valid integer.");
-                }
+                Console.WriteLine("Please enter a valid integer.");
             }
-
             throw new OperationCanceledException();
         }
 
@@ -30,19 +26,17 @@
             while (!ct.IsCancellationRequested)
             {
                 Console.Write(prompt);
-                var raw = Console.ReadLine()?.Replace(',', '.'); // acceptă și virgule
-                if (decimal.TryParse(raw, System.Globalization.NumberStyles.Float,
-                    System.Globalization.CultureInfo.InvariantCulture, out var value))
+                var raw = Console.ReadLine()?.Replace(',', '.');
+                if (decimal.TryParse(raw,
+                    System.Globalization.NumberStyles.Float,
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    out var value))
                 {
                     if (validate == null || validate(value))
                         return value;
-
-                    Console.WriteLine("Invalid number. Try again.");
+                    throw new InvalidInputException($"Invalid decimal '{value}'.");
                 }
-                else
-                {
-                    Console.WriteLine("Please enter a valid number.");
-                }
+                Console.WriteLine("Please enter a valid number.");
             }
 
             throw new OperationCanceledException();
@@ -54,11 +48,9 @@
             {
                 Console.Write(prompt);
                 var raw = Console.ReadLine();
-
                 if (!string.IsNullOrWhiteSpace(raw))
                     return raw.Trim();
-
-                Console.WriteLine("Value cannot be empty. Try again.");
+                throw new InvalidInputException("Value cannot be empty.");
             }
 
             throw new OperationCanceledException();

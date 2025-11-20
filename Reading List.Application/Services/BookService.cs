@@ -2,6 +2,7 @@
 using Reading_List.Application.Abstractions;
 using Reading_List.Application.Handlers;
 using Reading_List.Domain.Dtos;
+using Reading_List.Domain.Exceptions;
 using Reading_List.Domain.Models;
 
 namespace Reading_List.Application.Services
@@ -132,7 +133,7 @@ namespace Reading_List.Application.Services
         {
             var getResult = await _bookRepository.GetByIdAsync(bookId);
             if (!getResult.IsSuccess || getResult.Value is null)
-                return ErrorHandler.EntityNotFound<BookDto, int>(bookId);
+                throw new EntityNotFoundException(bookId);
 
             var book = getResult.Value;
             book.Finished = "yes";
@@ -145,12 +146,18 @@ namespace Reading_List.Application.Services
 
         public async Task<Result<BookDto>> SetRating(int bookId, decimal rating)
         {
-            if (rating < 1m || rating > 5m)
-                return Result<BookDto>.Failure("Rating must be between 1 and 5.");
 
             var getResult = await _bookRepository.GetByIdAsync(bookId);
             if (!getResult.IsSuccess || getResult.Value is null)
-                return ErrorHandler.EntityNotFound<BookDto, int>(bookId);
+                throw new EntityNotFoundException(bookId);
+
+            var validate = await _bookValidator.ValidateAsync(_mapper.toDto(getResult.Value)) ;
+            if (!validate.IsValid)
+            {
+                var message = string.Join("; ", validate.Errors.Select(e => e.ErrorMessage));
+                return Result<BookDto>.Failure(message);
+            }
+
 
             var book = getResult.Value;
             book.Finished = "yes";
@@ -163,6 +170,8 @@ namespace Reading_List.Application.Services
         }
         public async Task<Result<BooksStats>> GetStatsAsync()
         {
+
+
             var results = await _bookRepository.GetAllAsync();
 
             var books = results

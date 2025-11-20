@@ -26,6 +26,7 @@ namespace Reading_List.Application.Commands
             if (!statsResult.IsSuccess)
             {
                 return $"Error retrieving stats: {statsResult.ErrorMessage}";
+                throw statsResult.Exception ?? new Exception("Unknown error retrieving stats.");
             }
 
             string pagesByGenre=statsResult.Value!.PagesByGenre.Any()?

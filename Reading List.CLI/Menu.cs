@@ -56,6 +56,7 @@ namespace Reading_List.CLI
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Error executing command: {ex.Message}");
+                    Console.Write("Choose option: ");
                 }
             }
 

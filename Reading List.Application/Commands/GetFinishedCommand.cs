@@ -22,7 +22,7 @@ namespace Reading_List.Application.Commands
                 return "No finished books found.";
             }
 
-            return "Finished Books:\n" + string.Join("\n", finishedResults.Select(b => b.ToString()));
+            return "Finished Books:\n" + string.Join("\n", finishedResults.Select(b => b.Value!.ToString()));
             
         }
     }

@@ -1,5 +1,6 @@
 ﻿using Reading_List.Application.Abstractions;
 using Reading_List.Application.Handlers;
+using Reading_List.Domain.Exceptions;
 
 namespace Reading_List.Application.Commands
 {
@@ -19,23 +20,32 @@ namespace Reading_List.Application.Commands
         {
             var id = ConsoleInputHandler.ReadInt("Enter the Book ID to rate: ", i => i > 0, ct);
 
-            var rating = ConsoleInputHandler.ReadDecimal("Enter your rating (1-5): ", r => r >= 1 && r <= 5, ct);
+            var bookResult = await _bookService.GetByIdAsync(id);
+            if (!bookResult.IsSuccess || bookResult.Value is null)
+                throw new EntityNotFoundException(id);
 
-            var result = await _bookService.SetRating(id, rating);
+            var rating = ConsoleInputHandler.ReadDecimal("Enter your rating (1-5): ", v => v is >= 1m and <= 5m, ct);
+            try
+            {
+                var result = await _bookService.SetRating(id, rating);
 
-            if (result.IsSuccess)
-            {
-                return $"Book {id} rated {rating:0.0}/5 -> 200 OK";
+                return result.IsSuccess
+                    ? $"Book ID {id} rated {rating} successfully. -> 200 Ok"
+                    : $"Failed to rate Book ID {id}: {result.ErrorMessage}";
             }
-            else if (result.ErrorMessage?.Contains("not found", StringComparison.OrdinalIgnoreCase) == true)
+            catch (EntityNotFoundException ex)
             {
-                return $"Book {id} not found -> 404 Not Found";
+                return $"Book ID {id} not found -> 404 Not Found";
             }
-            else
+            catch (RatingOutOfRangeException ex)
             {
-                return $"Failed to rate book {id}: {result.ErrorMessage} -> 400 Bad Request";
+                return $"Invalid rating {ex.Rating}: {ex.Message} -> 400 Bad Request";
             }
-
+            catch (Exception ex)
+            {
+                return $"An error occurred while rating Book ID {id}: {ex.Message} -> 500 Internal Server Error";
+            }
         }
     }
+
 }

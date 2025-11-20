@@ -21,7 +21,6 @@ namespace Reading_List.Application.Commands
             var count = ConsoleInputHandler.ReadInt("Enter number of top rated books to retrieve: ", v => v > 0);
             var topBooksResult = await _bookService.GetTopRatedBooks(count);
             var topBooks = new List<BookDto>();
-            Console.WriteLine("Top Rated Books:");
             foreach (var result in topBooksResult)
             {
                 if (result.IsSuccess && result.Value != null)

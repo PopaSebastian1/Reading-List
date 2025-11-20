@@ -9,11 +9,11 @@ namespace Reading_List.Application.Commands
         public string Key => "1";
         public string Description => "Import one or more CSV files (comma-separated).";
 
-        private readonly IBookImportHandler _importExportService;
+        private readonly IBookImportHandler _importHandler;
 
         public ImportCSVsCommand(IBookImportHandler bookImportExportService)
         {
-            _importExportService = bookImportExportService;
+            _importHandler = bookImportExportService;
         }
 
         public async Task<string> ExecuteAsync(CancellationToken ct = default)
@@ -51,7 +51,7 @@ namespace Reading_List.Application.Commands
             Result<int> importResult;
             try
             {
-                importResult = await _importExportService.ImportAsync(resolved, ct);
+                importResult = await _importHandler.ImportAsync(resolved, ct);
             }
             catch (Exception ex)
             {

@@ -24,7 +24,8 @@ namespace Reading_List.Domain.Dtos
 
         public override string ToString()
         {
-            return $"{Id}: {Title} by {Author} - {PageCount} pages - Genre: {Genre} - Finished: {Finished}" +
+            string finishedText = Finished ? "Yes" : "No";
+            return $"{Id}: {Title} by {Author} - {PageCount} pages - Genre: {Genre} - Finished: {finishedText}" +
                    (Finished && Rating.HasValue ? $" - Rating: {Rating}/5" : "");
         }
 
