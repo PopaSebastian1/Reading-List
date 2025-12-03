@@ -43,6 +43,10 @@ namespace Reading_List.CLI
             services.AddSingleton<Menu>();
 
             return services.BuildServiceProvider();
+
+            //services.AddSingleton<MenuWithoutCommands>();
+
+            //return services.BuildServiceProvider();
         }
     }
 }
