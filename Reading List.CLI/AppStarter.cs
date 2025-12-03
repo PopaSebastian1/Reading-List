@@ -21,7 +21,9 @@ namespace Reading_List.CLI
             };
 
             var provider = DIContainer.Build();
-            var menu = provider.GetRequiredService<Menu>();
+            //var menu = provider.GetRequiredService<Menu>();
+
+            var menu = provider.GetRequiredService<MenuWithoutCommands>();
 
             await menu.RunAsync(cts.Token);
         }

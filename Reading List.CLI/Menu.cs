@@ -8,7 +8,10 @@ namespace Reading_List.CLI
 
         public Menu(IEnumerable<ICommand> commands)
         {
-            _commands = commands.OrderBy(c => c.Key).ToList();
+            _commands = commands
+                       .OrderBy(c => int.TryParse(c.Key, out var n) ? n : int.MaxValue)
+                       .ThenBy(c => c.Key)
+                       .ToList();
         }
 
         private void PrintMenu()
@@ -46,7 +49,7 @@ namespace Reading_List.CLI
 
                 try
                 {
-                    var result=await command.ExecuteAsync(ct);
+                    var result = await command.ExecuteAsync(ct);
                     Console.WriteLine(result);
                     if (command.Key == "C")
                         PrintMenu();
